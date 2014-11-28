@@ -27,10 +27,17 @@ elseif($action == "showContent") {
     //echo "<textarea readonly='readonly' cols='100' rows='10'>{$content}</textarea>";
     //高亮显示PHP代码
     //高亮显示字符串中的PHP代码
-    highlight_string($content);
+    $newContent = highlight_string($content, true);
     //高亮显示文本中的代码
     //highlight_file($filename);
-
+    $str = <<<EOF
+<table width="100%" bgcolor="pink" cellpadding="5" cellspacing='0'>
+    <tr>
+        <td>{$newContent}</td>
+    </tr>
+</table>
+EOF;
+    echo $str;
 }
 ?>
 <!DOCTYPE html>
