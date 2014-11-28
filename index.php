@@ -26,18 +26,48 @@ elseif($action == "showContent") {
     $content = file_get_contents($filename,FILE_USE_INCLUDE_PATH);
     //echo "<textarea readonly='readonly' cols='100' rows='10'>{$content}</textarea>";
     //高亮显示PHP代码
-    //高亮显示字符串中的PHP代码
-    $newContent = highlight_string($content, true);
     //高亮显示文本中的代码
     //highlight_file($filename);
-    $str = <<<EOF
+    if(strlen($content)){
+        //高亮显示字符串中的PHP代码
+        $HightLightContent = highlight_string($content, true);
+        $str = <<<EOF
 <table width="100%" bgcolor="pink" cellpadding="5" cellspacing='0'>
     <tr>
-        <td>{$newContent}</td>
+        <td>{$HightLightContent}</td>
     </tr>
 </table>
 EOF;
+        echo $str;
+    }
+    else {
+        alertMessage("文件没有内容，请编辑后再查看",$redirect);
+    }
+}
+elseif($action == "editContent") {
+    //修改文件内容
+    $content = file_get_contents($filename);
+    $str = <<<EOF
+    <form aciton='index.php' method='post'>
+        <textarea name='content' cols='190' rows='10'>{$content}</textarea><br />
+        <input type="hidden" name="action" value="doEdit"/>
+        <input type='hidden' name='filename' value='{$filename}'/>
+        <input type="submit" value="修改文件内容"/>
+    </form>
+EOF;
     echo $str;
+}
+elseif($action == "doEdit") {
+    //修改文件内容操作
+    $content = $_REQUEST['content'];
+    echo $content;
+    if(file_put_contents($filename,$content)) {
+        $message = "文件修改成功";
+    }
+    else {
+        $message = "文件修改失败";
+    }
+    alertMessage($message ,$redirect);
 }
 ?>
 <!DOCTYPE html>
@@ -196,7 +226,7 @@ EOF;
                             </td>
                             <td><!--查看、修改、重命名、复制、剪切、删除、下载-->
                                 <a href="index.php?action=showContent&filename=<?php echo $paths; ?>"><img src="images/show.png" alt="" title="查看" width="32" height="32"/></a>
-                                <a href=""><img src="images/edit.png" alt="" title="修改" width="32" height="32"/></a>
+                                <a href="index.php?action=editContent&filename=<?php echo $paths; ?>"><img src="images/edit.png" alt="" title="修改" width="32" height="32"/></a>
                                 <a href=""><img src="images/rename.png" alt="" title="重命名" width="32" height="32"/></a>
                                 <a href=""><img src="images/copy.png" alt=""  title="复制" width="32" height="32"/></a>
                                 <a href=""><img src="images/cut.png" alt="" title="剪切" width="32" height="32"/></a>
