@@ -76,6 +76,9 @@ elseif($action == "doEdit") {
         <meta http-equiv="content-type" content="text/html" charset="utf-8"/>
         <title>在线文件管理器</title>
         <link rel="stylesheet" href="css/cikonss.css"/>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <link rel="stylesheet" href="css/jquery-ui.css"/>
         <style type="text/css">
             body,p,div,ul,ol,table,dl,dd,dt{
                 margin:0;
@@ -105,9 +108,28 @@ elseif($action == "doEdit") {
                 var doc = document;
                 doc.getElementById(dis).style.display="block";
             }
+            function showPicture(filename ,src) {
+                //console.log(filename);
+                //console.log(src);
+                $("#showImg").attr("src",src);
+                $("#showImgDiv").dialog(
+                    {
+                        height:"auto",
+                        width:"auto",
+                        position:{my:"center" ,at:"center" ,collision:"fit"},
+                        modal:false, //是否模式对话框
+                        draggable:true, //是否允许拖拽
+                        resizable:true, //是否允许拖动
+                        title:filename, //对话框标题
+                        show:"slide",
+                        hide:"explode"
+                    }
+                );
+            }
         </script>
     </head>
     <body>
+    <div id="showImgDiv" style="display: none"><img src="" id="showImg" alt=""/></div>
     <h1>在线文件管理器</h1>
     <div id="top">
         <ul id="navi">
@@ -225,7 +247,28 @@ elseif($action == "doEdit") {
                                 ?>
                             </td>
                             <td><!--查看、修改、重命名、复制、剪切、删除、下载-->
+                                <?php
+                                //得到扩展名
+                                /**
+                                 * string strtolower(string $str) 将 string 中所有的字母字符转换为小写并返回
+                                 * array explode ( string $delimiter , string $string [, int $limit ] )
+                                 *  此函数返回由字符串组成的数组，每个元素都是 string 的一个子串，它们被字符串 delimiter 作为边界点分割出来
+                                 * mixed end ( array &$array )
+                                 *  end() 将 array 的内部指针移动到最后一个单元并返回其值
+                                 * in_array — 检查数组中是否存在某个值
+                                 */
+                                $ext = strtolower(end(explode(".",$val)));
+                                $imageExt = array("gif","jpg", "jpeg", "png","bmp");
+                                if(in_array($ext ,$imageExt)) {
+                                    ?>
+                                    <a href="#" onclick="showPicture('<?php echo $val; ?>','<?php echo $paths ?>')">
+                                        <img src="images/show.png" alt="" title="查看" width="32" height="32"/></a>
+                                <?php
+                                }
+                                else {
+                                ?>
                                 <a href="index.php?action=showContent&filename=<?php echo $paths; ?>"><img src="images/show.png" alt="" title="查看" width="32" height="32"/></a>
+                                <?php } ?>
                                 <a href="index.php?action=editContent&filename=<?php echo $paths; ?>"><img src="images/edit.png" alt="" title="修改" width="32" height="32"/></a>
                                 <a href=""><img src="images/rename.png" alt="" title="重命名" width="32" height="32"/></a>
                                 <a href=""><img src="images/copy.png" alt=""  title="复制" width="32" height="32"/></a>
