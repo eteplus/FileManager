@@ -30,7 +30,7 @@ function transByte($size) {
 
 /**
  * 创建文件
- * @param $filename 文件名
+ * @param  string $filename 文件名
  * @return string
  */
 function createFile($filename) {
@@ -67,5 +67,76 @@ function createFile($filename) {
     }
     else {
         return "非法文件名";
+    }
+}
+
+/**
+ * 重命名文件
+ * @param string $oldname 旧文件名
+ * @param string $newname 新文件名
+ */
+function renameFile($oldname, $newname) {
+    //验证文件名是否合法
+    if(checkFilename($newname)) {
+        //检测当前目录下是否存在同名文件
+        /**
+         * dirname -- 返回路径中的目录部分
+         */
+        $path = dirname($oldname);
+        if(!file_exists($path."/".$newname)) {
+            //进行重命名
+            if(rename($oldname,$path."/".$newname)) {
+                return "重命名成功";
+            }
+            else {
+                return "重命名失败";
+            }
+        }
+        else {
+            return "存在同名文件，请重新命名";
+        }
+    }
+    else {
+        return "非法文件名";
+    }
+}
+
+/**
+ * 删除文件
+ * @param  string $filename 文件名
+ * @return string
+ */
+function delFile($filename) {
+    if(unlink($filename)) {
+        return "文件删除成功";
+    }
+    else {
+        return "文件删除失败";
+    }
+}
+
+/**
+ * 下载文件操作
+ * 2014-12-03 13:36:55
+ * @param string $filename
+ */
+function downFile($filename) {
+    header("content-disposition:attachment;filename=".basename($filename));
+    header("content-length:".filesize($filename));
+    readfile($filename);
+}
+
+/**
+ * 验证文件名是否合法
+ * 2014-12-03 13:39:47
+ * @param $filename 文件名
+ */
+function checkFilename($filename) {
+    $pattern = "/[\/,\*,<>,\?\|]/";
+    if(preg_match($pattern, $filename)) {
+        return false;
+    }
+    else {
+        return true;
     }
 }
