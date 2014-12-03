@@ -10,7 +10,7 @@ require_once './func/file.func.php';
 require_once './func/common.func.php';
 date_default_timezone_set('PRC');
 $path = 'file';
-$path = $_REQUEST["path"]?$_REQUEST["path"]:$path;
+$path = @$_REQUEST["path"]?$_REQUEST["path"]:$path;
 $action = @$_REQUEST["action"];
 $filename = @$_REQUEST["filename"];
 $dirname = @$_REQUEST["dirname"];
@@ -37,7 +37,7 @@ elseif($action == "showContent") {
         //高亮显示字符串中的PHP代码
         $HightLightContent = highlight_string($content, true);
         $str = <<<EOF
-<table width="100%" bgcolor="pink" cellpadding="5" cellspacing='0'>
+<table width="100%" bgcolor="#FFC" cellpadding="5" cellspacing='0'>
     <tr>
         <td>{$HightLightContent}</td>
     </tr>
@@ -110,6 +110,59 @@ elseif($action == "downFile") {
      */
     $message = downFile($filename);
 }
+elseif($action == "copyFile") {
+    /**
+     * 复制文件
+     * 2014-12-03 18:49:36
+     */
+    $str = <<<EOF
+    <form action="index.php?action=doCopyFile" method = "post">
+        将文件复制到：<input type="text"  name="dstname" placeholder="将文件复制到"/>
+        <input type="hidden" name="path" value="{$path}" />
+        <input type="hidden" name="filename" value="{$filename}" />
+        <input type="submit" value="复制文件" />
+    </form>
+EOF;
+    echo $str;
+}
+else if($action == "doCopyFile") {
+    /**
+     * 执行复制文件
+     * 2014-12-03 18:51:16
+     */
+    $dstname = $_REQUEST['dstname'];
+    $message = copyFile($filename, $path."/".$dstname);
+    alertMessage($message,$redirect);
+}
+elseif($action == "cutFile") {
+    /**
+     * 剪切文件
+     * 2014-12-03 18:53:50
+     */
+    $str = <<<EOF
+    <form action="index.php?action=doCutFile" method = "post">
+        将文件剪切到：<input type="text"  name="dstname" placeholder="将文件剪切到"/>
+        <input type="hidden" name="path" value="{$path}" />
+        <input type="hidden" name="filename" value="{$filename}" />
+        <input type="submit" value="剪切文件" />
+    </form>
+EOF;
+    echo $str;
+}
+else if($action == "doCutFile") {
+    /**
+     * 执行剪切文件
+     * 2014-12-03 18:53:58
+     */
+    $dstname = $_REQUEST['dstname'];
+    $message = cutFile($filename, $path."/".$dstname);
+    alertMessage($message,$redirect);
+}
+elseif($action == "uploadFile") {
+    $fileInfo = $_FILES['upFile'];
+    $message = uploadFile($fileInfo,$path);
+    alertMessage($message,$redirect);
+}
 elseif($action == "createFolder") {
     /**
      * 新建文件夹
@@ -149,7 +202,7 @@ elseif($action == "copyFolder") {
      */
     $str = <<<EOF
     <form action="index.php?action=doCopyFolder" method = "post">
-        将文件复制到：<input type="text"  name="dstname" placeholder="将文件复制到"/>
+        将文件夹复制到：<input type="text"  name="dstname" placeholder="将文件夹复制到"/>
         <input type="hidden" name="path" value="{$path}" />
         <input type="hidden" name="dirname" value="{$dirname}" />
         <input type="submit" value="复制文件夹" />
@@ -169,7 +222,7 @@ elseif($action == "doCopyFolder") {
 }
 elseif($action == "cutFolder") {
     /**
-     * 复制文件夹
+     * 剪切文件夹
      * 2014-12-03 15:55:35
      */
     $str = <<<EOF
@@ -184,12 +237,20 @@ EOF;
 }
 elseif($action == "doCutFolder") {
     /**
-     * 执行复制文件夹
+     * 执行剪切文件夹
      * 2014-12-03 16:01:57
      */
     $dstname = $_REQUEST["dstname"];
     //echo $path."/".$dstname."/".basename($dirname);
-    $message = cutFolder($dirname,$path."/".$dstname."/".basename($dirname));
+    $message = cutFolder($dirname,$path."/".$dstname);
+    alertMessage($message,$redirect);
+}
+elseif($action == "delFolder") {
+    /*
+     * 删除文件夹
+     * 2014-12-03 18:37:08
+     */
+    $message = delFolder($dirname);
     alertMessage($message,$redirect);
 }
 ?>
@@ -232,12 +293,12 @@ elseif($action == "doCutFolder") {
                 doc.getElementById(dis).style.display="block";
             }
             function delFile(filename,path) {
-                if(window.confirm("您确定要删除？删除后无法恢复！")) {
+                if(window.confirm("您确定要删除该文件？删除后无法恢复！")) {
                     location.href = "index.php?action=delFile&filename="+filename+"&path="+path;
                 }
             }
-            function delFolder($dirname ,$path) {
-                if(window.confirm("您确定要删除？删除后无法恢复！")) {
+            function delFolder(dirname ,path) {
+                if(window.confirm("您确定要删除该文件夹？删除后无法恢复！")) {
                     location.href = "index.php?action=delFolder&dirname="+dirname+"&path="+path;
                 }
             }
@@ -247,8 +308,8 @@ elseif($action == "doCutFolder") {
                 $("#showImg").attr("src",src);
                 $("#showImgDiv").dialog(
                     {
-                        height:"auto",
-                        width:"auto",
+                        height:"500",
+                        width:"500",
                         position:{my:"center" ,at:"center" ,collision:"fit"},
                         modal:false, //是否模式对话框
                         draggable:true, //是否允许拖拽
@@ -303,7 +364,10 @@ elseif($action == "doCutFolder") {
 
             <tr id="uploadFile" style="display:none;">
                 <td >请选择要上传的文件</td>
-                <td ><input type="file" name="myFile" />
+                <td >
+                    <input type="file" name="upFile" />
+                    <input type="hidden" name="path"  value="<?php echo $path;?>"/>
+                    <input type="hidden" name="action" value="uploadFile"/>
                     <input type="submit" value="上传文件" />
                 </td>
             </tr>
@@ -411,8 +475,8 @@ elseif($action == "doCutFolder") {
                                 <?php } ?>
                                 <a href="index.php?action=editContent&path=<?php echo $path; ?>&filename=<?php echo $paths; ?>"><img src="images/edit.png" alt="" title="修改" width="32" height="32"/></a>
                                 <a href="index.php?action=renameFile&path=<?php echo $path; ?>&filename=<?php echo $paths; ?>"><img src="images/rename.png" alt="" title="重命名" width="32" height="32"/></a>
-                                <a href=""><img src="images/copy.png" alt=""  title="复制" width="32" height="32"/></a>
-                                <a href=""><img src="images/cut.png" alt="" title="剪切" width="32" height="32"/></a>
+                                <a href="index.php?action=copyFile&path=<?php echo $path; ?>&filename=<?php echo $paths; ?>"><img src="images/copy.png" alt=""  title="复制" width="32" height="32"/></a>
+                                <a href="index.php?action=cutFile&path=<?php echo $path; ?>&filename=<?php echo $paths; ?>"><img src="images/cut.png" alt="" title="剪切" width="32" height="32"/></a>
                                 <a href="#" onclick="delFile('<?php echo $paths; ?>','<?php echo $path;?>')"><img src="images/delete.png" alt="" title="删除" width="32" height="32"/></a>
                                 <a href="index.php?action=downFile&path=<?php echo $path; ?>&filename=<?php echo $paths;?>"><img src="images/download.png" alt="" title="下载" width="32" height="32"/></a>
                             </td>
@@ -488,34 +552,11 @@ elseif($action == "doCutFolder") {
                             ?>
                         </td>
                         <td><!--查看、修改、重命名、复制、剪切、删除、下载-->
-                            <?php
-                            //得到扩展名
-                            /**
-                             * string strtolower(string $str) 将 string 中所有的字母字符转换为小写并返回
-                             * array explode ( string $delimiter , string $string [, int $limit ] )
-                             *  此函数返回由字符串组成的数组，每个元素都是 string 的一个子串，它们被字符串 delimiter 作为边界点分割出来
-                             * mixed end ( array &$array )
-                             *  end() 将 array 的内部指针移动到最后一个单元并返回其值
-                             * in_array — 检查数组中是否存在某个值
-                             */
-                            $array_val = explode("." ,$val);
-                            $ext = strtolower(end($array_val));
-                            $imageExt = array("gif","jpg", "jpeg", "png","bmp");
-                            if(in_array($ext ,$imageExt)) {
-                                ?>
-                                <a href="#" onclick="showPicture('<?php echo $val; ?>','<?php echo $paths ?>')">
-                                    <img src="images/show.png" alt="" title="查看" width="32" height="32"/></a>
-                            <?php
-                            }
-                            else {
-                                ?>
-                                <a href="index.php?&path=<?php echo $paths; ?>"><img src="images/show.png" alt="" title="查看" width="32" height="32"/></a>
-                            <?php } ?>
+                            <a href="index.php?&path=<?php echo $paths; ?>"><img src="images/show.png" alt="" title="查看" width="32" height="32"/></a>
                             <a href="index.php?action=renameFolder&path=<?php echo $path; ?>&dirname=<?php echo $paths;?>"><img src="images/rename.png" alt="" title="重命名" width="32" height="32"/></a>
                             <a href="index.php?action=copyFolder&path=<?php echo $path; ?>&dirname=<?php echo $paths;?>"><img src="images/copy.png" alt=""  title="复制" width="32" height="32"/></a>
                             <a href="index.php?action=cutFolder&path=<?php echo $path; ?>&dirname=<?php echo $paths;?>"><img src="images/cut.png" alt="" title="剪切" width="32" height="32"/></a>
                             <a href="#" onclick="delFolder('<?php echo $paths; ?>','<?php echo $path;?>')"><img src="images/delete.png" alt="" title="删除" width="32" height="32"/></a>
-                            <a href="index.php?action=downFile&path=<?php echo $path; ?>&filename=<?php echo $paths;?>"><img src="images/download.png" alt="" title="下载" width="32" height="32"/></a>
                         </td>
                     </tr>
                     <?php

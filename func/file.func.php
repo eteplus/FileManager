@@ -140,3 +140,106 @@ function checkFilename($filename) {
         return true;
     }
 }
+
+/**
+ * 复制文件
+ * 2014-12-03 18:45:38
+ * @param string $filename 要复制的文件
+ * @param string $dstname 目标目录
+ * @return string
+ */
+function copyFile($filename,$dstname) {
+    if(file_exists($dstname)) {
+        //检查同目录下是否存在同文件
+        if(!file_exists($dstname."/".basename($filename))) {
+            if(copy($filename,$dstname."/".basename($filename))) {
+                return "文件复制成功";
+            }
+            else {
+                return "文件复制失败";
+            }
+        }
+        else {
+            return $dstname."目录下存在同名文件";
+        }
+    }
+    else {
+        return "目标目录不存在";
+    }
+}
+
+/**
+ * 剪切文件
+ * 2014-12-03 18:46:37
+ * @param string $filename 要剪切的文件
+ * @param string $dstname 目标目录
+ * @return string
+ */
+function cutFile($filename,$dstname) {
+    if(file_exists($dstname)) {
+        //检查同目录下是否存在同文件
+        if(!file_exists($dstname."/".basename($filename))) {
+            if(rename($filename,$dstname."/".basename($filename))) {
+                return "文件剪切成功";
+            }
+            else {
+                return "文件剪切失败";
+            }
+        }
+        else {
+            return $dstname."目录下存在同名文件";
+        }
+    }
+    else {
+        return "目标目录不存在";
+    }
+}
+
+
+function uploadFile($fileInfo,$path ,$allowExt=array("gif","jpeg","jpg","png","txt","html","php"),$maxSize=10485760) {
+    //判断错误号
+    if($fileInfo['error'] == UPLOAD_ERR_OK) {
+        //文件是否是通过HTTP POST 方式上传的
+        if(is_uploaded_file($fileInfo['tmp_name'])) {
+            //上传文件的文件名，只允许上传，jpeg,jpg,png,gif,txt的文件
+            $ext = getExt($fileInfo['name']);
+            $uniqid = getUniqidName();
+            $destination = $path."/".pathinfo($fileInfo['name'],PATHINFO_FILENAME)."_".$uniqid.".".$ext;
+            if(in_array($ext,$allowExt)) {
+                if($fileInfo['size'] <= $maxSize) {
+                    if(move_uploaded_file($fileInfo['tmp_name'],$destination)) {
+                        return "文件上传成功";
+                    }
+                    else {
+                        return "文件上传失败";
+                    }
+                }
+                else {
+                    return "文件过大";
+                }
+            }
+            else {
+                return "非法文件类型";
+            }
+        }
+        else {
+            return "文件不是通过HTTP POST方式上传上来的";
+        }
+    }
+    else {
+        switch($fileInfo['error']){
+            case 1:
+                return "超过了配置文件的大小";
+                break;
+            case 2:
+                return "超过了表单允许接收数据的大小";
+                break;
+            case 3:
+                return "文件部分被上传";
+                break;
+            case 4:
+                return "没有文件被上传";
+                break;
+        }
+    }
+}

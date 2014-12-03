@@ -101,7 +101,7 @@ function copyFolder($src ,$dst) {
  * return string
  */
 function cutFolder($src ,$dst) {
-    echo $dst;
+    //echo $src."<br>".$dst;
     if(file_exists($dst)) {
         if(is_dir($dst)) {
             if(!file_exists($dst."/".basename($src))) {
@@ -117,12 +117,37 @@ function cutFolder($src ,$dst) {
             }
         }
         else {
-            return $dst." 不是一个文件夹";
+            return "不是一个文件夹";
         }
     }
     else {
         return "目标文件夹不存在";
     }
+}
+
+/**
+ * 删除文件夹
+ * 2014-12-03 18:30:00
+ * @param string $path
+ * @return string
+ */
+function delFolder($path) {
+    $handle = opendir($path);
+    //先删除文件夹里的文件，再删除文件夹
+    while(($item = readdir($handle)) !== false) {
+        if($item != "." && $item != "..") {
+            if(is_file($path."/".$item)) {
+                unlink($path . "/" . $item);
+            }
+            if(is_dir($path."/".$item)) {
+                $func = __FUNCTION__;
+                $func($path."/".$item);
+            }
+        }
+    }
+    closedir($handle);
+    rmdir($path);
+    return "文件夹删除成功";
 }
 
 /**

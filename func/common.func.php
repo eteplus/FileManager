@@ -26,4 +26,14 @@ function getExt($filename) {
     $val = pathinfo($filename,PATHINFO_EXTENSION);
     return strtolower($val);
 }
+
+/**
+ * 产生唯一名称
+ * 2014-12-03 19:03:30
+ * @param int $length
+ * @return string
+ */
+function getUniqidName($length=10){
+    return substr(md5(uniqid(microtime(true),true)),0,$length);
+}
 ?>
