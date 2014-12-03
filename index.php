@@ -257,7 +257,8 @@ elseif($action == "doEdit") {
                                  *  end() 将 array 的内部指针移动到最后一个单元并返回其值
                                  * in_array — 检查数组中是否存在某个值
                                  */
-                                $ext = strtolower(end(explode(".",$val)));
+                                $array_val = explode("." ,$val);
+                                $ext = strtolower(end($array_val));
                                 $imageExt = array("gif","jpg", "jpeg", "png","bmp");
                                 if(in_array($ext ,$imageExt)) {
                                     ?>
