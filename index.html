@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Filemanager by eteplus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Filemanager</h1>
+      <h2 class="project-tagline">在线文件管理</h2>
+      <a href="https://github.com/eteplus/FileManager" class="btn">View on GitHub</a>
+      <a href="https://github.com/eteplus/FileManager/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/eteplus/FileManager/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="filemanager-在线文件管理" class="anchor" href="#filemanager-%E5%9C%A8%E7%BA%BF%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86" aria-hidden="true"><span class="octicon octicon-link"></span></a>fileManager (在线文件管理)</h2>
+
+<p><code>index.php</code> :  <em>入口文件，文件展示主页面</em><br>
+<code>common.func.php</code> : <em>公共功能模块</em><br>
+<code>file.func.php</code> : <em>文件功能模块</em><br>
+<code>dir.func.php</code> : <em>目录功能模块</em>  </p>
+
+<p><em>（PHP函数学习笔记）</em>  </p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">date_default_timezone_set</span> (<span class="pl-s"><span class="pl-pds">'</span>PRC<span class="pl-pds">'</span></span>)      </span>
+<span class="pl-s1">设定用于所有日期时间函数的默认时区为<span class="pl-c1">PRC</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">file_get_contents</span> (<span class="pl-k">string</span> <span class="pl-smi">$filename</span>,<span class="pl-c1">FILE_USE_INCLUDE_PATH</span>);</span>
+<span class="pl-s1">将整个文件读入到一个字符串中</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 要读取的文件的名称</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回数据，失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">int</span> <span class="pl-c1">file_put_contents</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> ,<span class="pl-c1">mixed</span> <span class="pl-smi">$data</span>)</span>
+<span class="pl-s1">将一个字符串写入文件中</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 要被写入数据的文件名  </span>
+<span class="pl-s1"><span class="pl-smi">$data</span> : 要写入的数据。类型可以是 <span class="pl-k">string</span>，<span class="pl-k">array</span> 或者是 <span class="pl-c1">stream</span> 资源</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回写入到文件内数据的字节数，失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">date</span> (<span class="pl-k">string</span> <span class="pl-smi">$format</span> [, <span class="pl-k">int</span> <span class="pl-smi">$timestamp</span> ])</span>
+<span class="pl-s1">返回将整数 <span class="pl-c1">timestamp</span> 按照给定的格式字串而产生的字符串,如果没有给出时间戳则使用本地当前时间。换句话说，<span class="pl-c1">timestamp</span> 是可选的，默认值为 <span class="pl-c1">time</span>()[当前系统时间]。</span>
+<span class="pl-s1"><span class="pl-smi">$format</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Y-m-d H:i:s<span class="pl-pds">"</span></span> ([具体请查官方文档](<span class="pl-c1">http</span>:<span class="pl-c">//php.net/manual/zh/function.date.php))</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">is_readable</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">判断给定文件名是否存在并且可读</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> :  文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果由 <span class="pl-c1">filename</span> 指定的文件或目录存在并且可读则返回 <span class="pl-c1">TRUE</span>，否则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">is_writable</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">判断给定的文件名是否可写</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 要检查的文件名称</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果文件 <span class="pl-c1">filename</span> 存在并且可写则返回 <span class="pl-c1">TRUE</span>, 否则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">is_executable</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">判断给定文件名是否可执行</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> :  文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果文件存在且可执行则返回 <span class="pl-c1">TRUE</span>，错误时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">filetype</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">返回文件的类型</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> :  文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 可能的值有 <span class="pl-c1">fifo</span>，<span class="pl-c1">char</span>，<span class="pl-c1">dir</span>，<span class="pl-c1">block</span>，<span class="pl-c1">link</span>，<span class="pl-c1">file</span> 和 <span class="pl-c1">unknown</span> , 如果出错则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1">(如果 <span class="pl-c1">stat</span> 调用失败或者文件类型未知的话 <span class="pl-c1">filetype</span>() 还会产生一个 <span class="pl-c1">E_NOTICE</span> 消息)</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">int</span> <span class="pl-c1">filesize</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">取得指定文件的大小</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回文件大小的字节数，如果出错返回 <span class="pl-c1">FALSE</span> 并生成一条 <span class="pl-c1">E_WARNING</span> 级的错误</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">int</span> <span class="pl-c1">filectime</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">取得文件的创建的时间</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回文件创建的时间， 或者在失败时返回 <span class="pl-c1">FALSE</span>。 时间以 <span class="pl-c1">Unix</span> 时间戳的方式返回</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">int</span> <span class="pl-c1">filemtime</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">取得文件上次修改的时间</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回文件上次被修改的时间， 或者在失败时返回 <span class="pl-c1">FALSE</span>。时间以 <span class="pl-c1">Unix</span> 时间戳的方式返回，可用于 <span class="pl-c1">date</span>()</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">int</span> <span class="pl-c1">fileatime</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">取得文件上次访问的时间</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回文件上次被访问的时间， 或者在失败时返回 <span class="pl-c1">FALSE</span>。时间以 <span class="pl-c1">Unix</span> 时间戳的方式返回</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">array</span> <span class="pl-c1">explode</span> ( <span class="pl-k">string</span> <span class="pl-smi">$delimiter</span> , <span class="pl-k">string</span> <span class="pl-smi">$string</span>)</span>
+<span class="pl-s1">此函数返回由字符串组成的数组，每个元素都是 <span class="pl-k">string</span> 的一个子串，它们被字符串 <span class="pl-c1">delimiter</span> 作为边界点分割出来。</span>
+<span class="pl-s1"><span class="pl-smi">$delimiter</span> : 边界上的分隔字符</span>
+<span class="pl-s1"><span class="pl-smi">$string</span> : 输入的字符串</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回由字符串组成的数组,如果 <span class="pl-c1">delimiter</span> 为空字符串（<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>），<span class="pl-c1">explode</span>() 将返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">strtolower</span> ( <span class="pl-k">string</span> <span class="pl-smi">$str</span> )</span>
+<span class="pl-s1">将 <span class="pl-k">string</span> 中所有的字母字符转换为小写并返回</span>
+<span class="pl-s1"><span class="pl-smi">$str</span> :  输入的字符串</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回转换后的小谢字符串</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">mixed</span> <span class="pl-c1">end</span> ( <span class="pl-k">array</span> <span class="pl-k">&amp;</span><span class="pl-smi">$array</span> )</span>
+<span class="pl-s1"><span class="pl-c1">end</span>() 将 <span class="pl-k">array</span> 的内部指针移动到最后一个单元并返回其值</span>
+<span class="pl-s1"><span class="pl-smi">$array</span> : 传递的数组</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回最后一个元素的值，或者如果是空数组则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">in_array</span> ( <span class="pl-c1">mixed</span> <span class="pl-smi">$needle</span> , <span class="pl-k">array</span> <span class="pl-smi">$haystack</span> [, <span class="pl-k">bool</span> <span class="pl-smi">$strict</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span> ] )</span>
+<span class="pl-s1">在 <span class="pl-c1">haystack</span> 中搜索 <span class="pl-c1">needle</span>，如果没有设置 <span class="pl-c1">strict</span> 则使用宽松的比较(检查数组中是否存在某个值)</span>
+<span class="pl-s1"><span class="pl-smi">$needle</span> :   待搜索的值</span>
+<span class="pl-s1"><span class="pl-smi">$haystack</span> : 需要查找的数组</span>
+<span class="pl-s1"><span class="pl-smi">$strict</span> : 如果第三个参数 <span class="pl-c1">strict</span> 的值为 <span class="pl-c1">TRUE</span> 则 <span class="pl-c1">in_array</span>() 函数还会检查 <span class="pl-c1">needle</span> 的类型是否和 <span class="pl-c1">haystack</span> 中的相同</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果找到 <span class="pl-c1">needle</span> 则返回 <span class="pl-c1">TRUE</span>，否则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">basename</span> ( <span class="pl-k">string</span> <span class="pl-smi">$path</span> [, <span class="pl-k">string</span> <span class="pl-smi">$suffix</span> ] )</span>
+<span class="pl-s1">返回路径中的文件名部分</span>
+<span class="pl-s1"><span class="pl-smi">$path</span> : 文件路径</span>
+<span class="pl-s1"><span class="pl-smi">$suffix</span> : 如果文件名是以<span class="pl-c1">suffix</span>结束的，那这一部分也会被去掉</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回 <span class="pl-smi">$path</span> 的基本的文件名</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">dirname</span> ( <span class="pl-k">string</span> <span class="pl-smi">$path</span> )</span>
+<span class="pl-s1">返回路径中的目录部分</span>
+<span class="pl-s1"><span class="pl-smi">$path</span> : 文件路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回 <span class="pl-c1">path</span> 的父目录。 如果在 <span class="pl-c1">path</span> 中没有斜线，则返回一个点（<span class="pl-s"><span class="pl-pds">'</span>.<span class="pl-pds">'</span></span>），表示当前目录</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">mixed</span> <span class="pl-c1">highlight_file</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> [, <span class="pl-k">bool</span> <span class="pl-smi">$return</span> <span class="pl-k">=</span> <span class="pl-c1">false</span> ] )</span>
+<span class="pl-s1">使用<span class="pl-c1">PHP</span>内置的语法高亮器所定义的颜色，打印输出或者返回 <span class="pl-c1">filename</span> 文件中语法高亮版本的代码</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 欲高亮文件的路径</span>
+<span class="pl-s1"><span class="pl-smi">$return</span> : 设置该参数为 <span class="pl-c1">TRUE</span> 使函数返回高亮后的代码             </span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果 <span class="pl-k">return</span> 设置为 <span class="pl-c1">TRUE</span>，高亮后的代码不会被打印输出而是以字符串的形式返回。 高亮成功返回 <span class="pl-c1">TRUE</span>，否则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">mixed</span> <span class="pl-c1">pathinfo</span> ( <span class="pl-k">string</span> <span class="pl-smi">$path</span> [, <span class="pl-k">int</span> <span class="pl-smi">$options</span> <span class="pl-k">=</span> <span class="pl-c1">PATHINFO_DIRNAME</span> <span class="pl-k">|</span> <span class="pl-c1">PATHINFO_BASENAME</span> <span class="pl-k">|</span> <span class="pl-c1">PATHINFO_EXTENSION</span> <span class="pl-k">|</span> <span class="pl-c1">PATHINFO_FILENAME</span> ] )</span>
+<span class="pl-s1">返回文件路径的信息</span>
+<span class="pl-s1"><span class="pl-smi">$path</span> : 文件路径</span>
+<span class="pl-s1"><span class="pl-smi">$options</span> : 如果没有指定 <span class="pl-c1">options</span> 默认是返回全部的单元</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果没有传入 <span class="pl-c1">options</span> ，将会返回包括以下单元的数组 <span class="pl-k">array</span>：<span class="pl-c1">dirname</span>，<span class="pl-c1">basename</span> 和 <span class="pl-c1">extension</span>（如果有），以 及<span class="pl-c1">filename</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">mixed</span> <span class="pl-c1">microtime</span> ([ <span class="pl-k">bool</span> <span class="pl-smi">$get_as_float</span> ] )</span>
+<span class="pl-s1">返回当前 <span class="pl-c1">Unix</span> 时间戳和微秒数</span>
+<span class="pl-s1">如果给出了 <span class="pl-c1">get_as_float</span> 参数并且其值等价于 <span class="pl-c1">TRUE</span>，<span class="pl-c1">microtime</span>() 将返回一个浮点数</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">uniqid</span> ([ <span class="pl-k">string</span> <span class="pl-smi">$prefix</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> [, <span class="pl-k">bool</span> <span class="pl-smi">$more_entropy</span> <span class="pl-k">=</span> <span class="pl-c1">false</span> ]] )</span>
+<span class="pl-s1">获取一个带前缀、基于当前时间微秒数的唯一<span class="pl-c1">ID</span></span>
+<span class="pl-s1"><span class="pl-smi">$prefix</span> : <span class="pl-c1">prefix</span>为空，则返回的字符串长度为<span class="pl-c1">13</span>。<span class="pl-c1">more_entropy</span> 为 <span class="pl-c1">TRUE</span>，则返回的字符串长度为<span class="pl-c1">23</span></span>
+<span class="pl-s1"><span class="pl-smi">$more_entropy</span> : 如果设置为 <span class="pl-c1">TRUE</span>，<span class="pl-c1">uniqid</span>() 会在返回的字符串结尾增加额外的煽（使用<span class="pl-c1">combined</span> <span class="pl-c1">linear</span> <span class="pl-c1">congruential</span> <span class="pl-c1">generator</span>）。 使得唯一<span class="pl-c1">ID</span>更具唯一性。</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回字符串形式的唯一<span class="pl-c1">ID</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">md5</span> ( <span class="pl-k">string</span> <span class="pl-smi">$str</span> [, <span class="pl-k">bool</span> <span class="pl-smi">$raw_output</span> <span class="pl-k">=</span> <span class="pl-c1">false</span> ] )</span>
+<span class="pl-s1">计算字符串的 <span class="pl-c1">MD5</span> 散列值</span>
+<span class="pl-s1"><span class="pl-smi">$str</span> : 原始的字符串</span>
+<span class="pl-s1"><span class="pl-smi">$raw_output</span> : 如果可选的<span class="pl-c1">raw_output</span>被设置为 <span class="pl-c1">TRUE</span> ,那么 <span class="pl-c1">MD5</span> 报文摘要将以<span class="pl-c1">16</span>字节长度的原始二进制格式返回</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 以 <span class="pl-c1">32</span> 字符十六进制数字形式返回散列值</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">substr</span> ( <span class="pl-k">string</span> <span class="pl-smi">$string</span> , <span class="pl-k">int</span> <span class="pl-smi">$start</span> [, <span class="pl-k">int</span> <span class="pl-smi">$length</span> ] )</span>
+<span class="pl-s1">返回字符串 <span class="pl-k">string</span> 由 <span class="pl-c1">start</span> 和 <span class="pl-c1">length</span> 参数指定的子字符串</span>
+<span class="pl-s1"><span class="pl-smi">$string</span> : 输入的字符串</span>
+<span class="pl-s1"><span class="pl-smi">$start</span> : 如果 <span class="pl-c1">start</span> 是非负数，返回的字符串将从 <span class="pl-k">string</span> 的 <span class="pl-c1">start</span> 位置开始，从 <span class="pl-c1">0</span> 开始计算。例如，在字符串 “<span class="pl-c1">abcdef</span>” 中，在位置 <span class="pl-c1">0</span> 的字符是 “<span class="pl-c1">a</span>”，位置 <span class="pl-c1">2</span> 的字符串是 “<span class="pl-c1">c</span>” 等等。</span>
+<span class="pl-s1">如果 <span class="pl-c1">start</span> 是负数，返回的字符串将从 <span class="pl-k">string</span> 结尾处向前数第 <span class="pl-c1">start</span> 个字符开始。</span>
+<span class="pl-s1">如果 <span class="pl-k">string</span> 的长度小于或等于 <span class="pl-c1">start</span>，将返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"><span class="pl-smi">$length</span> : 如果提供了正数的 <span class="pl-c1">length</span>，返回的字符串将从 <span class="pl-c1">start</span> 处开始最多包括 <span class="pl-c1">length</span> 个字符（取决于 <span class="pl-k">string</span> 的长度）。</span>
+<span class="pl-s1">如果提供了负数的 <span class="pl-c1">length</span>，那么 <span class="pl-k">string</span> 末尾处的许多字符将会被漏掉（若 <span class="pl-c1">start</span> 是负数则从字符串尾部算起）。</span>
+<span class="pl-s1">如果 <span class="pl-c1">start</span> 不在这段文本中，那么将返回一个空字符串。</span>
+<span class="pl-s1">如果提供了值为 <span class="pl-c1">0</span>，<span class="pl-c1">FALSE</span> 或 <span class="pl-c1">NULL</span> 的 <span class="pl-c1">length</span>，那么将返回一个空字符串。</span>
+<span class="pl-s1">如果没有提供 <span class="pl-c1">length</span>，返回的子字符串将从 <span class="pl-c1">start</span> 位置开始直到字符串结尾</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回提取的子字符串， 或者在失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">float</span> <span class="pl-c1">round</span> ( <span class="pl-k">float</span> <span class="pl-smi">$val</span> [, <span class="pl-k">int</span> <span class="pl-smi">$precision</span> <span class="pl-k">=</span> <span class="pl-c1">0</span> [, <span class="pl-k">int</span> <span class="pl-smi">$mode</span> <span class="pl-k">=</span> <span class="pl-c1">PHP_ROUND_HALF_UP</span> ]] )</span>
+<span class="pl-s1">返回将 <span class="pl-c1">val</span> 根据指定精度 <span class="pl-c1">precision</span>（十进制小数点后数字的数目）进行四舍五入的结果。<span class="pl-c1">precision</span> 也可以是负数或零（默认值）</span>
+<span class="pl-s1"><span class="pl-smi">$val</span> : 要处理的值</span>
+<span class="pl-s1"><span class="pl-smi">$precision</span> : 可选的十进制小数点后的数目</span>
+<span class="pl-s1"><span class="pl-smi">$mode</span> : <span class="pl-c1">PHP_ROUND_HALF_UP</span>、 <span class="pl-c1">PHP_ROUND_HALF_DOWN</span> <span class="pl-c1">PHP_ROUND_HALF_EVEN</span> 或 <span class="pl-c1">PHP_ROUND_HALF_ODD</span></span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回四舍五入后的值</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">int</span> <span class="pl-c1">preg_match</span> ( <span class="pl-k">string</span> <span class="pl-smi">$pattern</span> , <span class="pl-k">string</span> <span class="pl-smi">$subject</span> [, <span class="pl-k">array</span> <span class="pl-k">&amp;</span><span class="pl-smi">$matches</span> [, <span class="pl-k">int</span> <span class="pl-smi">$flags</span> <span class="pl-k">=</span> <span class="pl-c1">0</span> [, <span class="pl-k">int</span> <span class="pl-smi">$offset</span> <span class="pl-k">=</span> <span class="pl-c1">0</span> ]]] )</span>
+<span class="pl-s1">搜索<span class="pl-c1">subject</span>与<span class="pl-c1">pattern</span>给定的正则表达式的一个匹配</span>
+<span class="pl-s1"><span class="pl-smi">$pattern</span> : 要搜索的模式，字符串类型</span>
+<span class="pl-s1"><span class="pl-smi">$subject</span> : 输入字符串</span>
+<span class="pl-s1"><span class="pl-smi">$matches</span> : 如果提供了参数<span class="pl-c1">matches</span>，它将被填充为搜索结果。 <span class="pl-smi">$matches</span>[<span class="pl-c1">0</span>]将包含完整模式匹配到的文本， <span class="pl-smi">$matches</span>[<span class="pl-c1">1</span>] 将包含第一个捕获子组匹配到的文本，以此类推</span>
+<span class="pl-s1"><span class="pl-smi">$flags</span> : <span class="pl-c1">PREG_OFFSET_CAPTURE</span></span>
+<span class="pl-s1">如果传递了这个标记，对于每一个出现的匹配返回时会附加字符串偏移量(相对于目标字符串的)。 注意：这会改变填充到<span class="pl-c1">matches</span>参数的数组，使其每个元素成为一个由 第<span class="pl-c1">0</span>个元素是匹配到的字符串，第<span class="pl-c1">1</span>个元素是该匹配字符串 在目标字符串<span class="pl-c1">subject</span>中的偏移量</span>
+<span class="pl-s1"><span class="pl-smi">$offset</span> : 通常，搜索从目标字符串的开始位置开始。可选参数 <span class="pl-c1">offset</span> 用于 指定从目标字符串的某个未知开始搜索(单位是字节)</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 返回 <span class="pl-c1">pattern</span> 的匹配次数。 它的值将是<span class="pl-c1">0</span>次（不匹配）或<span class="pl-c1">1</span>次，因为<span class="pl-c1">preg_match</span>()在第一次匹配后 将会停止搜索。<span class="pl-c1">preg_match_all</span>()不同于此，它会一直搜索<span class="pl-c1">subject</span> 直到到达结尾。 如果发生错误<span class="pl-c1">preg_match</span>()返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">file_exists</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">检查文件或目录是否存在</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件或目录的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 存在则返回 <span class="pl-c1">TRUE</span> ,否则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">touch</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> [, <span class="pl-k">int</span> <span class="pl-smi">$time</span> <span class="pl-k">=</span> <span class="pl-c1">time</span>() [, <span class="pl-k">int</span> <span class="pl-smi">$atime</span> ]] )</span>
+<span class="pl-s1">尝试将由 <span class="pl-c1">filename</span> 给出的文件的访问和修改时间设定为给出的 <span class="pl-c1">time</span>。 注意访问时间总是会被修改的，不论有几个参数</span>
+<span class="pl-s1">（如果文件不存在，则创建）</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 要设定的文件名</span>
+<span class="pl-s1"><span class="pl-smi">$time</span> : 要设定的时间。如果没有提供参数 <span class="pl-smi">$time</span> 则会使用当前系统时间</span>
+<span class="pl-s1"><span class="pl-smi">$atime</span> : 如果给出了这个参数，则给定文件的访问时间会被设为 <span class="pl-smi">$atime</span>，否则会设置为 <span class="pl-smi">$time</span>。</span>
+<span class="pl-s1">如果没有给出这两个参数，则使用当前系统时间</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回 <span class="pl-c1">TRUE</span> , 失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">rename</span> ( <span class="pl-k">string</span> <span class="pl-smi">$oldname</span> , <span class="pl-k">string</span> <span class="pl-smi">$newname</span> )</span>
+<span class="pl-s1">重命名一个文件或目录, 尝试把 <span class="pl-smi">$oldname</span> 重命名为 <span class="pl-smi">$newname</span></span>
+<span class="pl-s1"><span class="pl-smi">$oldname</span> : 旧的名字</span>
+<span class="pl-s1"><span class="pl-smi">$newname</span> : 新的名字</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回 <span class="pl-c1">TRUE</span> , 失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">unlink</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">删除文件</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回 <span class="pl-c1">TRUE</span> , 失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">copy</span> ( <span class="pl-k">string</span> <span class="pl-smi">$source</span> , <span class="pl-k">string</span> <span class="pl-smi">$dest</span> )</span>
+<span class="pl-s1">拷贝文件, 将文件从 <span class="pl-smi">$source</span> 拷贝到 <span class="pl-smi">$dest</span></span>
+<span class="pl-s1"><span class="pl-smi">$source</span> : 源文件的路径</span>
+<span class="pl-s1"><span class="pl-smi">$dest</span> : 目标路径, 如果 <span class="pl-smi">$dest</span> 是一个 <span class="pl-c1">URL</span>，则如果封装协议不支持覆盖已有的文件时拷贝操作会失败</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回 <span class="pl-c1">TRUE</span> , 失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">is_uploaded_file</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">判断文件是否是通过 <span class="pl-c1">HTTP</span> <span class="pl-c1">POST</span> 上传的</span>
+<span class="pl-s1">为了能使 <span class="pl-c1">is_uploaded_file</span>() 函数正常工作，必段指定类似于 <span class="pl-smi">$_FILES</span>[<span class="pl-s"><span class="pl-pds">'</span>userfile<span class="pl-pds">'</span></span>][<span class="pl-s"><span class="pl-pds">'</span>tmp_name<span class="pl-pds">'</span></span>] 的变量，而在从客户端上传的文件名 <span class="pl-smi">$_FILES</span>[<span class="pl-s"><span class="pl-pds">'</span>userfile<span class="pl-pds">'</span></span>][<span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>] 不能正常运作</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 要检查的文件名</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回 <span class="pl-c1">TRUE</span> , 失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">move_uploaded_file</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> , <span class="pl-k">string</span> <span class="pl-smi">$destination</span> )</span>
+<span class="pl-s1">将上传的文件移动到新位置</span>
+<span class="pl-s1">本函数检查并确保由 <span class="pl-smi">$filename</span> 指定的文件是合法的上传文件（即通过 <span class="pl-c1">PHP</span> 的 <span class="pl-c1">HTTP</span> <span class="pl-c1">POST</span> 上传机制所上传的）。如果文件合法，则将其移动为由 <span class="pl-smi">$destination</span> 指定的文件</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 上传的文件的文件名</span>
+<span class="pl-s1"><span class="pl-smi">$destination</span> : 移动文件到这个位置</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回 <span class="pl-c1">TRUE</span>。</span>
+<span class="pl-s1">如果 <span class="pl-c1">filename</span> 不是合法的上传文件，不会出现任何操作，<span class="pl-c1">move_uploaded_file</span>() 将返回 <span class="pl-c1">FALSE</span>。</span>
+<span class="pl-s1">如果 <span class="pl-c1">filename</span> 是合法的上传文件，但出于某些原因无法移动，不会出现任何操作，<span class="pl-c1">move_uploaded_file</span>() 将返回 <span class="pl-c1">FALSE</span>。此外还会发出一条警告</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">resource</span> <span class="pl-c1">opendir</span> ( <span class="pl-k">string</span> <span class="pl-smi">$path</span> )</span>
+<span class="pl-s1">打开目录句柄</span>
+<span class="pl-s1"><span class="pl-smi">$path</span> : 要打开的目录的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果成功则返回目录句柄的 <span class="pl-c1">resource</span>，失败则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1">如果 <span class="pl-c1">path</span> 不是一个合法的目录或者因为权限限制或文件系统错误而不能打开目录，<span class="pl-c1">opendir</span>() 返回 <span class="pl-c1">FALSE</span> 并产生一个 <span class="pl-c1">E_WARNING</span> 级别的 <span class="pl-c1">PHP</span> 错误信息。可以在 <span class="pl-c1">opendir</span>() 前面加上“<span class="pl-k">@</span>”符号来抑制错误信息的输出</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">void</span> <span class="pl-c1">closedir</span> ( <span class="pl-c1">resource</span> <span class="pl-smi">$dir_handle</span> )</span>
+<span class="pl-s1">关闭目录句柄</span>
+<span class="pl-s1"><span class="pl-smi">$dir_handle</span> : 目录句柄的 <span class="pl-c1">resource</span>，之前由 <span class="pl-c1">opendir</span>() 打开</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">string</span> <span class="pl-c1">readdir</span> ([ <span class="pl-c1">resource</span> <span class="pl-smi">$dir_handle</span> ] )</span>
+<span class="pl-s1">从目录句柄中读取条目 (返回目录中下一个文件的文件名。文件名以在文件系统中的排序返回)</span>
+<span class="pl-s1"><span class="pl-smi">$dir_handle</span> : 目录句柄的 <span class="pl-c1">resource</span>，之前由 <span class="pl-c1">opendir</span>() 打开</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功则返回文件名 或者在失败时返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">is_file</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">判断给定文件名是否为一个正常的文件</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件的路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果文件存在且为正常的文件则返回 <span class="pl-c1">TRUE</span>，否则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">is_dir</span> ( <span class="pl-k">string</span> <span class="pl-smi">$filename</span> )</span>
+<span class="pl-s1">判断给定文件名是否是一个目录</span>
+<span class="pl-s1"><span class="pl-smi">$filename</span> : 文件的路径, 如果文件名存在并且为目录则返回 <span class="pl-c1">TRUE</span>。如果 <span class="pl-smi">$filename</span> 是一个相对路径，则按照当前工作目录检查其相对路径</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 如果文件名存在，并且是个目录，返回 <span class="pl-c1">TRUE</span>，否则返回 <span class="pl-c1">FALSE</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">bool</span> <span class="pl-c1">mkdir</span> ( <span class="pl-k">string</span> <span class="pl-smi">$pathname</span> [, <span class="pl-k">int</span> <span class="pl-smi">$mode</span> <span class="pl-k">=</span> <span class="pl-c1">0777</span> [, <span class="pl-k">bool</span> <span class="pl-smi">$recursive</span> <span class="pl-k">=</span> <span class="pl-c1">false</span> ] )</span>
+<span class="pl-s1">尝试新建一个由 <span class="pl-smi">$pathname</span> 指定的目录</span>
+<span class="pl-s1"><span class="pl-smi">$pathname</span> : 目录的路径</span>
+<span class="pl-s1"><span class="pl-smi">$mode</span> : 默认的 <span class="pl-c1">mode</span> 是 <span class="pl-c1">0777</span>，意味着最大可能的访问权,设置目录的权限</span>
+<span class="pl-s1"><span class="pl-smi">$rescursive</span> : 是否嵌套创建目录</span>
+<span class="pl-s1"><span class="pl-k">return</span> : 成功时返回 <span class="pl-c1">TRUE</span>， 失败时返回 <span class="pl-c1">FALSE</span>      </span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">----------------------------------------------</span><span class="pl-k">-</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">Heredoc</span>技术（常用在输出包含大量<span class="pl-c1">HTML</span>语法文档的时候）</span>
+<span class="pl-s1">以<span class="pl-k">&lt;&lt;</span><span class="pl-k">&lt;</span><span class="pl-c1">EOF</span>标记开始，以<span class="pl-c1">EOF</span>标记结束</span>
+<span class="pl-s1">结束标记必须顶头写，不能有缩进和空格，且在结束标记末尾要有分号 </span>
+<span class="pl-s1"><span class="pl-en">example</span> :</span>
+<span class="pl-s1">    <span class="pl-smi">$str</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">&lt;&lt;&lt;</span><span class="pl-k">EOF</span></span></span>
+<span class="pl-s1"><span class="pl-s">    &lt;form action="index.php?action=doCutFile" method = "post"&gt;</span></span>
+<span class="pl-s1"><span class="pl-s">        &lt;input type="text"  name="dstname" placeholder="将文件剪切到"/&gt;</span></span>
+<span class="pl-s1"><span class="pl-s">        &lt;input type="hidden" name="path" value="{<span class="pl-smi">$path</span>}" /&gt;</span></span>
+<span class="pl-s1"><span class="pl-s">        &lt;input type="hidden" name="filename" value="{<span class="pl-smi">$filename</span>}" /&gt;</span></span>
+<span class="pl-s1"><span class="pl-s">        &lt;input type="submit" value="剪切文件" /&gt;</span></span>
+<span class="pl-s1"><span class="pl-s">    &lt;/form&gt;</span></span>
+<span class="pl-s1"><span class="pl-s"><span class="pl-k">EOF</span></span>;</span>
+<span class="pl-s1">    <span class="pl-c1">echo</span> <span class="pl-smi">$str</span>;</span></pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/eteplus/FileManager">Filemanager</a> is maintained by <a href="https://github.com/eteplus">eteplus</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
